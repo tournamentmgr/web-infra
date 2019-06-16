@@ -1,5 +1,5 @@
-resource "aws_cloudfront_distribution" "s3_distribution" {
-  count = "${var.basic_auth == true || var.enable_prerender == true ? 0 : 1}"
+resource "aws_cloudfront_distribution" "s3_distribution_with_prerender" {
+  count = "${var.enable_prerender == true && var.basic_auth == false ? 1 : 0}"
   origin {
     domain_name = "${aws_s3_bucket.bucket.bucket_regional_domain_name}"
     origin_id = "${local.root_domain}-${var.environment}"
@@ -26,11 +26,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       cookies {
         forward = "none"
       }
-      headers = ["user-agent"]
     }
     lambda_function_association {
       event_type = "origin-response"
       lambda_arn = "${aws_lambda_function.hsts_protection.arn}:${aws_lambda_function.hsts_protection.version}"
+    }
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = "${aws_lambda_function.prerender.0.arn}:${aws_lambda_function.prerender.0.version}"
     }
 
     viewer_protocol_policy = "redirect-to-https"

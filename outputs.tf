@@ -6,6 +6,7 @@ output "distribution" {
     concat(
       aws_cloudfront_distribution.s3_distribution,
       aws_cloudfront_distribution.s3_distribution_with_auth,
+      aws_cloudfront_distribution.s3_distribution_with_prerender,
       [""],
     ),
     0,

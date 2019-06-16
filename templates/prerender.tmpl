@@ -1,0 +1,45 @@
+exports.handler = (event, context, callback) => {
+    const request = event.Records[0].cf.request;
+    const headers = request.headers;
+    console.log("Headers", headers);
+    const user_agent = headers['user-agent'];
+    if (user_agent) {
+      var prerender = /googlebot|apis-google|bingbot|yandex|baiduspider|Facebot|facebookexternalhit|twitterbot|discordbot|rogerbot|msnbot|linkedinbot|embedly|quora link preview|Slack-ImgProxy|showyoubot|outbrain|pinterest|slackbot|vkShare|curl|W3C_Validator/i.test(user_agent[0].value);
+      prerender = prerender || /_escaped_fragment_/.test(request.querystring);
+      prerender = prerender && ! /\.(css|xml|less|png|jpg|jpeg|gif|pdf|doc|txt|ico|rss|zip|mp3|rar|exe|wmv|doc|avi|ppt|mpg|mpeg|tif|wav|mov|psd|ai|xls|mp4|m4a|swf|dat|dmg|iso|flv|m4v|torrent|ttf|woff|svg|eot)$/i.test(request.uri);
+      prerender = prerender && ! /apple-app-site-association/i.test(request.uri);
+      if (prerender) {
+        let path = request.uri;
+        
+        // TM index is /home
+        if (path.includes('index.html')) {
+            path = '/home';
+        }
+        
+        // if a query string provided remove the query string and replace the ? with a + (translated to space with S3)
+        if (request.querystring) {
+            path = path + "+" + request.querystring;
+            request.querystring = ''
+        }
+
+        request.uri = path + ".html";
+
+
+        // Switch the prerendering bucket to S3
+        const s3DomainName = "${prerenderBucket}.s3.amazonaws.com";
+        request.origin = {
+             s3: {
+                 domainName: s3DomainName,
+                 region: '',
+                 authMethod: 'none',
+                 path: '',
+                 customHeaders: {}
+            }
+         };
+        request.headers['host'] = [{ key: 'host', value: s3DomainName}];
+    
+        console.log(user_agent[0].value, "requesting", request.uri);
+      }
+    }
+    callback(null, request);
+};

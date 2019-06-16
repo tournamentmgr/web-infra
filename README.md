@@ -13,6 +13,8 @@ Variables:
 - basic_auth (optional) - boolean to enable basic auth w/lambda@Edge
 - username - username for lambda@Edge, if basic_auth
 - password - password for lambda@Edge, if basic_auth
+- enable_prerender (optional) - boolean to enable prerender routing: https://dev.to/danquack/caching-spas-for-seo-with-lamdbaedge-24ba
+- prerender_bucket - s3 bucket to route prerender traffic to
 - domain - the domain you want to deploy to
 - zoneid - route53 zone id
 - certificate_id - Certificate ID from ACM

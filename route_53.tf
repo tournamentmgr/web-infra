@@ -7,6 +7,7 @@ resource "aws_route53_record" "domain" {
     concat(
       aws_cloudfront_distribution.s3_distribution,
       aws_cloudfront_distribution.s3_distribution_with_auth,
+      aws_cloudfront_distribution.s3_distribution_with_prerender,
       [""],
     ),
     0,
@@ -15,6 +16,7 @@ resource "aws_route53_record" "domain" {
     concat(
       aws_cloudfront_distribution.s3_distribution,
       aws_cloudfront_distribution.s3_distribution_with_auth,
+      aws_cloudfront_distribution.s3_distribution_with_prerender,
       [""],
     ),
     0,

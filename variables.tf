@@ -25,3 +25,11 @@ variable "password" {
     description = "the password to utilize for the domain"
     default = ""
 }
+variable "enable_prerender" {
+    description = "Enable SEO Prerender bucket routing"
+    default = false
+}
+variable "prerender_bucket" {
+    description = "Prerender Bucket name"
+    default = ""
+}

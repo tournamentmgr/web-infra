@@ -1,5 +1,5 @@
 resource "aws_cloudfront_distribution" "s3_distribution_with_auth" {
-  count = "${var.basic_auth == true ? 1 : 0}"
+  count = "${var.basic_auth == true && var.enable_prerender == false ? 1 : 0}"
   origin {
     domain_name = "${aws_s3_bucket.bucket.bucket_regional_domain_name}"
     origin_id = "${local.root_domain}-${var.environment}"
