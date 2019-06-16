@@ -20,7 +20,7 @@ resource "aws_lambda_function" "auth" {
   depends_on       = ["local_file.password"]
   filename         = "${path.module}/password.zip"
   function_name    = "basic_auth_${var.environment}"
-  role             = "${aws_iam_role.lambda_at_edge_policy.arn}"
+  role             = "${aws_iam_role.lambda_at_edge_role.arn}"
   handler          = "password.handler"
   runtime          = "nodejs10.x"
   source_code_hash = "${data.archive_file.auth_zip.output_base64sha256}"

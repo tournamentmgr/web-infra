@@ -19,7 +19,7 @@ resource "aws_lambda_function" "prerender" {
   depends_on       = ["local_file.prerender"]
   filename         = "${path.module}/prerender.zip"
   function_name    = "prerender_${var.environment}"
-  role             = "${aws_iam_role.lambda_at_edge_policy.arn}"
+  role             = "${aws_iam_role.lambda_at_edge_role.arn}"
   handler          = "prerender.handler"
   runtime          = "nodejs10.x"
   source_code_hash = "${data.archive_file.prerender_zip.output_base64sha256}"

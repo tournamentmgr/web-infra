@@ -1,4 +1,4 @@
-resource "aws_iam_role" "lambda_at_edge_policy" {
+resource "aws_iam_role" "lambda_at_edge_role" {
   name = "lambdaEdgeRole_${var.environment}"
   assume_role_policy = <<EOF
 {
@@ -18,4 +18,29 @@ resource "aws_iam_role" "lambda_at_edge_policy" {
   ]
 }
 EOF
+}
+
+
+resource "aws_iam_policy" "lambda_at_edge_policy" {
+  name        = "LogPolicy_${var.environment}"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+resource "aws_iam_role_policy_attachment" "log-attach" {
+  role       = "${aws_iam_role.lambda_at_edge_role.name}"
+  policy_arn = "${aws_iam_policy.lambda_at_edge_policy.arn}"
 }
