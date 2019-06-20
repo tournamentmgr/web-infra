@@ -25,7 +25,8 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_prerender" {
 
       cookies {
         forward = "none"
-      }
+      } 
+      headers = ["user-agent"]
     }
     lambda_function_association {
       event_type = "origin-response"

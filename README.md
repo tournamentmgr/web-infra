@@ -24,6 +24,7 @@ Outputs
 - bucket - the bucket to use for data
 - distribution - cloudfront distibution
 - route - newly created A record
+- identity - cloudfront identity
 
 ### Example
 ```

@@ -1,6 +1,10 @@
 output "bucket" {
     value = "${aws_s3_bucket.bucket}"
 }
+output "identity" {
+  value = "${aws_cloudfront_origin_access_identity.origin_access_identity}"
+}
+
 output "distribution" {
     value = element(
     concat(
