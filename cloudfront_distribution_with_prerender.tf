@@ -16,8 +16,8 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_prerender" {
   aliases = ["${var.environment == "" ? "${var.domain}" : "${var.environment}.${var.domain}"}"]
 
   default_cache_behavior {
-    allowed_methods = ["GET", "HEAD"]
-    cached_methods = ["GET", "HEAD"]
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    cached_methods  = ["GET", "HEAD"]
     target_origin_id = "${aws_s3_bucket.bucket.id}"
     
     forwarded_values {
