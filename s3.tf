@@ -1,10 +1,13 @@
+locals {
+  bucket = "${var.environment != "" ? "${local.root_domain}-${var.environment}" : "${local.root_domain}"}"
+}
 data "aws_iam_policy_document" "s3_get_policy" {
   statement {
     actions = [
         "s3:GetObject"
     ]
     resources = [
-        "arn:aws:s3:::${local.root_domain}-${var.environment}/*"
+        "arn:aws:s3:::${local.bucket}/*"
     ]
 
     principals {
@@ -15,7 +18,7 @@ data "aws_iam_policy_document" "s3_get_policy" {
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${local.root_domain}-${var.environment}"
+  bucket = "${local.bucket}"
   policy = "${data.aws_iam_policy_document.s3_get_policy.json}"
   force_destroy = "true"
   server_side_encryption_configuration {
