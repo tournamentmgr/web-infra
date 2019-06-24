@@ -16,8 +16,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   aliases = ["${var.environment == "" ? "${var.domain}" : "${var.environment}.${var.domain}"}"]
 
   default_cache_behavior {
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
-    cached_methods  = ["GET", "HEAD"]
+    allowed_methods  = "${var.allowed_methods}"
+    cached_methods   = "${var.allowed_methods}"
     target_origin_id = "${aws_s3_bucket.bucket.id}"
     
     forwarded_values {
@@ -26,6 +26,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       cookies {
         forward = "none"
       }
+      headers = ["Origin","Access-Control-Request-Headers","Access-Control-Request-Method"]
     }
     lambda_function_association {
       event_type = "origin-response"

@@ -18,6 +18,8 @@ Variables:
 - domain - the domain you want to deploy to
 - zoneid - route53 zone id
 - certificate_id - Certificate ID from ACM
+- allowed_origins (optional) - list of CORS origin default: [*]
+- allowed_methods (optional) - list of CORS methods default: [GET, HEAD]
 
 Outputs
 ---

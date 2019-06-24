@@ -33,3 +33,11 @@ variable "prerender_bucket" {
     description = "Prerender Bucket name"
     default = ""
 }
+variable "allowed_origins" {
+    description = "Allowed Headers"
+    default = ["*"]
+}
+variable "allowed_methods" {
+    description = "Allowed Methods"
+    default = ["GET", "HEAD"]
+}

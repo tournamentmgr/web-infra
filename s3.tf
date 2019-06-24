@@ -28,4 +28,10 @@ resource "aws_s3_bucket" "bucket" {
       }
     }
   }
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = "${var.allowed_methods}"
+    allowed_origins = "${var.allowed_origins}"
+    max_age_seconds = 3000
+  }
 }

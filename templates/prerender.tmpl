@@ -11,11 +11,6 @@ exports.handler = (event, context, callback) => {
       if (prerender) {
         let path = request.uri;
         
-        // TM index is /home
-        if (path.includes('index.html')) {
-            path = '/home';
-        }
-        
         // if a query string provided remove the query string and replace the ? with a + (translated to space with S3)
         if (request.querystring) {
             path = path + "+" + request.querystring;
