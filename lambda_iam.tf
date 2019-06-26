@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_at_edge_role" {
-  name = "lambdaEdgeRole_${var.environment}"
+  name = "${var.environment == "" ? "lambdaEdgeRole" : "lambdaEdgeRole_${var.environment}"}" 
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -22,7 +22,7 @@ EOF
 
 
 resource "aws_iam_policy" "lambda_at_edge_policy" {
-  name        = "LogPolicy_${var.environment}"
+  name        = "${var.environment == "" ? "LogPolicy_" : "LogPolicy_${var.environment}"}" 
   policy = <<EOF
 {
   "Version": "2012-10-17",

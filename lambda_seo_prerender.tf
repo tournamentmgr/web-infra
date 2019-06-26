@@ -16,7 +16,7 @@ data "archive_file" "prerender_zip" {
 resource "aws_lambda_function" "prerender" {
   count            = "${var.enable_prerender ? 1 : 0}"
   filename         = "${path.module}/prerender.zip"
-  function_name    = "prerender_${var.environment}"
+  function_name    = "${var.environment == "" ? "prerender" : "prerender_${var.environment}"}"
   role             = "${aws_iam_role.lambda_at_edge_role.arn}"
   handler          = "lambda.handler"
   runtime          = "nodejs10.x"
