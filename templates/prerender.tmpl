@@ -17,9 +17,6 @@ exports.handler = (event, context, callback) => {
             request.querystring = ''
         }
 
-        request.uri = path + ".html";
-
-
         // Switch the prerendering bucket to S3
         const s3DomainName = "${prerenderBucket}.s3.amazonaws.com";
         request.origin = {
