@@ -15,6 +15,7 @@ exports.handler = (event, context, callback) => {
         if (request.querystring) {
             path = path + "+" + request.querystring;
             request.querystring = ''
+            request.uri = path
         }
 
         // Switch the prerendering bucket to S3
