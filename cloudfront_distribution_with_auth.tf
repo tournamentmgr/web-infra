@@ -26,7 +26,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_auth" {
       cookies {
         forward = "none"
       }
-      headers = ["Origin","Access-Control-Request-Headers","Access-Control-Request-Method"]
+      headers = ["Origin"]
     }
     lambda_function_association {
       event_type = "origin-response"
