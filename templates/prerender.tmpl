@@ -7,7 +7,7 @@ exports.handler = (event, context, callback) => {
       var prerender = /googlebot|apis-google|bingbot|yandex|baiduspider|Facebot|facebookexternalhit|twitterbot|discordbot|rogerbot|msnbot|linkedinbot|embedly|quora link preview|Slack-ImgProxy|showyoubot|outbrain|pinterest|slackbot|vkShare|curl|W3C_Validator/i.test(user_agent[0].value);
       prerender = prerender || /_escaped_fragment_/.test(request.querystring);
       prerender = prerender && ! /\.(css|xml|less|png|jpg|jpeg|gif|pdf|doc|txt|ico|rss|zip|mp3|rar|exe|wmv|doc|avi|ppt|mpg|mpeg|tif|wav|mov|psd|ai|xls|mp4|m4a|swf|dat|dmg|iso|flv|m4v|torrent|ttf|woff|svg|eot)$/i.test(request.uri);
-      prerender = prerender && ! /apple-app-site-association|ads.txt/i.test(request.uri);
+      prerender = prerender && ! /apple-app-site-association|ads.txt|app-ads.txt/i.test(request.uri);
       if (prerender) {
         let path = request.uri;
         
