@@ -19,6 +19,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_auth" {
     allowed_methods = "${var.allowed_methods}"
     cached_methods  = "${var.allowed_methods}"
     target_origin_id = "${aws_s3_bucket.bucket.id}"
+    compress        = true
     
     forwarded_values {
       query_string = true
@@ -26,7 +27,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_auth" {
       cookies {
         forward = "none"
       }
-      headers = ["Origin"]
+      headers = ["Origin", "Accept-Encoding"]
     }
     lambda_function_association {
       event_type = "origin-response"

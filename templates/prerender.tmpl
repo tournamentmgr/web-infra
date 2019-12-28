@@ -3,6 +3,18 @@ exports.handler = (event, context, callback) => {
     const headers = request.headers;
     console.log("Headers", headers);
     const user_agent = headers['user-agent'];
+
+    let uriAddition = '';
+    // Allow for compression, ignore if 
+    try {
+      if (headers['accept-encoding'] && headers['accept-encoding'][0].value === "gzip") {
+        console.log("Using compression")
+        uriAddition = ".gz"
+      }
+    } catch(e) {
+      console.error("Error", e)
+    }
+    
     if (user_agent) {
       var prerender = /googlebot|apis-google|bingbot|yandex|baiduspider|Facebot|facebookexternalhit|twitterbot|discordbot|rogerbot|msnbot|linkedinbot|embedly|quora link preview|Slack-ImgProxy|showyoubot|outbrain|pinterest|slackbot|vkShare|curl|W3C_Validator/i.test(user_agent[0].value);
       prerender = prerender || /_escaped_fragment_/.test(request.querystring);
@@ -10,6 +22,7 @@ exports.handler = (event, context, callback) => {
       prerender = prerender && ! /apple-app-site-association|ads.txt|app-ads.txt/i.test(request.uri);
       if (prerender) {
         let path = request.uri;
+        uriAddition = '';
         
         // if a query string provided remove the query string and replace the ? with a + (translated to space with S3)
         if (request.querystring) {
@@ -18,21 +31,33 @@ exports.handler = (event, context, callback) => {
             request.uri = path
         }
 
-        // Switch the prerendering bucket to S3
-        const s3DomainName = "${prerenderBucket}.s3.amazonaws.com";
-        request.origin = {
-             s3: {
-                 domainName: s3DomainName,
-                 region: '',
-                 authMethod: 'none',
-                 path: '',
-                 customHeaders: {}
-            }
-         };
-        request.headers['host'] = [{ key: 'host', value: s3DomainName}];
-    
-        console.log(user_agent[0].value, "requesting", request.uri);
+      // if a query string provided remove the query string and replace the ? with a + (translated to space with S3)
+      if (request.querystring) {
+        path = path + "+" + request.querystring;
+        request.querystring = ''
+        request.uri = path
       }
+
+      // Switch the prerendering bucket to S3
+      const s3DomainName = "${prerenderBucket}.s3.amazonaws.com";
+      request.origin = {
+        s3: {
+          domainName: s3DomainName,
+          region: '',
+          authMethod: 'none',
+          path: '',
+          customHeaders: {}
+        }
+      };
+      request.headers['host'] = [{
+        key: 'host',
+        value: s3DomainName
+      }];
+
+      console.log(user_agent[0].value, "requesting", request.uri);
     }
-    callback(null, request);
+  }
+
+  request.uri += uriAddition;
+  callback(null, request);
 };
