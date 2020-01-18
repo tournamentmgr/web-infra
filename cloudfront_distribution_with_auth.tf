@@ -13,7 +13,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_auth" {
   is_ipv6_enabled = true
   default_root_object = "index.html"
 
-  aliases = ["${var.environment == "" ? "${var.domain}" : "${var.environment}.${var.domain}"}"]
+  aliases = var.environment == "" ? split(",", "${var.domain},www.${var.domain}"): ["${var.environment}.${var.domain}"]
 
   default_cache_behavior {
     allowed_methods = "${var.allowed_methods}"

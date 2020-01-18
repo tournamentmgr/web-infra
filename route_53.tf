@@ -24,3 +24,11 @@ resource "aws_route53_record" "domain" {
     evaluate_target_health = false
   }
 }
+resource "aws_route53_record" "cname" {
+  count = var.environment == "" ? 1 : 0
+  zone_id = "${var.zoneid}"
+  name    = "www"
+  type    = "CNAME"
+  ttl     = "5"
+  records = [var.domain]
+}
