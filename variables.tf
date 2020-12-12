@@ -1,43 +1,47 @@
 variable "environment" {
-    description = "the subdomain environment you want to deploy to. If domain is naked, do not specify"
-    default = ""
+  description = "the subdomain environment you want to deploy to. If domain is naked, do not specify"
+  default     = ""
 }
 variable "domain" {
-    description = "the domain you want to deploy to"
+  description = "the domain you want to deploy to"
 }
 
 variable "zoneid" {
-    description = "route53 zone id"
+  description = "route53 zone id"
 }
 variable "certificate_id" {
-    description = "Certificate ID"
+  description = "Certificate ID"
 }
 
 variable "basic_auth" {
-    description = "Enable basic auth"
-    default = false
+  description = "Enable basic auth"
+  default     = false
 }
 variable "username" {
-    description = "the username to utilize for the domain"
-    default = ""
+  description = "the username to utilize for the domain"
+  default     = ""
 }
 variable "password" {
-    description = "the password to utilize for the domain"
-    default = ""
+  description = "the password to utilize for the domain"
+  default     = ""
 }
 variable "enable_prerender" {
-    description = "Enable SEO Prerender bucket routing"
-    default = false
+  description = "Enable SEO Prerender bucket routing"
+  default     = false
 }
 variable "prerender_bucket" {
-    description = "Prerender Bucket name"
-    default = ""
+  description = "Prerender Bucket name"
+  default     = ""
 }
 variable "allowed_origins" {
-    description = "Allowed Headers"
-    default = ["*"]
+  description = "Allowed Headers"
+  default     = ["*"]
 }
 variable "allowed_methods" {
-    description = "Allowed Methods"
-    default = ["GET", "HEAD"]
+  description = "Allowed Methods"
+  default     = ["GET", "HEAD"]
+}
+variable "allowed_headers" {
+  description = "Allowed Methods"
+  default     = ["*"]
 }
