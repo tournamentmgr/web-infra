@@ -45,3 +45,7 @@ variable "allowed_headers" {
   description = "Allowed Methods"
   default     = ["*"]
 }
+variable "enable_logging" {
+  description = "Enable logging IAM permissions"
+  default     = true
+}
