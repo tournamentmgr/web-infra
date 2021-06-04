@@ -41,6 +41,7 @@ resource "aws_iam_policy" "lambda_at_edge_policy" {
 EOF
 }
 resource "aws_iam_role_policy_attachment" "log-attach" {
+  count      = var.enable_logging ? 1 : 0
   role       = aws_iam_role.lambda_at_edge_role.name
   policy_arn = aws_iam_policy.lambda_at_edge_policy.arn
 }
