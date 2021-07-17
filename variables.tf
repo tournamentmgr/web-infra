@@ -49,3 +49,20 @@ variable "enable_logging" {
   description = "Enable logging IAM permissions"
   default     = true
 }
+variable "custom_error_responses" {
+  description = "Error Responses within cloudfront"
+  type = list(object({
+    error_code         = number,
+    response_code      = number,
+    response_page_path = string
+  }))
+  default = [{
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
+    }, {
+    error_code         = 403
+    response_code      = 200
+    response_page_path = "/index.html"
+  }]
+}
