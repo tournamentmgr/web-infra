@@ -3,6 +3,20 @@ locals {
 }
 data "aws_iam_policy_document" "s3_get_policy" {
   statement {
+    effect  = "Deny"
+    actions = ["s3:*"]
+
+    resources = [
+      "arn:aws:s3:::${local.bucket}/*"
+    ]
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = [false]
+    }
+  }
+  statement {
+    effect = "Allow"
     actions = [
       "s3:GetObject"
     ]
@@ -15,6 +29,7 @@ data "aws_iam_policy_document" "s3_get_policy" {
       identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
     }
   }
+
 }
 
 resource "aws_s3_bucket" "bucket" {
@@ -34,4 +49,12 @@ resource "aws_s3_bucket" "bucket" {
     allowed_origins = var.allowed_origins
     max_age_seconds = 3000
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "bucket" {
+  bucket = aws_s3_bucket.bucket.id
+
+  block_public_acls   = true
+  block_public_policy = true
+  ignore_public_acls  = true
 }
