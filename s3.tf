@@ -9,6 +9,11 @@ data "aws_iam_policy_document" "s3_get_policy" {
     resources = [
       "arn:aws:s3:::${local.bucket}/*"
     ]
+
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
     condition {
       test     = "Bool"
       variable = "aws:SecureTransport"
