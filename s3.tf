@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "s3_get_policy" {
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
     condition {

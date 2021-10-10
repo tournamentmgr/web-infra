@@ -1,0 +1,16 @@
+name: Terraform Lint
+on:
+  pull_request:
+    paths: 
+      - "**/*.tf"
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container: hashicorp/terraform:latest
+    steps:
+      - name: Init
+        run: terraform init
+      - name: Ensure formatting
+        run: terraform fmt
+      - name: Ensure validate syntax
+        run: terraform validate

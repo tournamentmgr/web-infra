@@ -17,6 +17,10 @@ variable "basic_auth" {
   description = "Enable basic auth"
   default     = false
 }
+variable "index_redirect" {
+  description = "Enable index redirect https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-index.html"
+  default     = false
+}
 variable "username" {
   description = "the username to utilize for the domain"
   default     = ""
@@ -44,10 +48,6 @@ variable "allowed_methods" {
 variable "allowed_headers" {
   description = "Allowed Methods"
   default     = ["*"]
-}
-variable "enable_logging" {
-  description = "Enable logging IAM permissions"
-  default     = true
 }
 variable "custom_error_responses" {
   description = "Error Responses within cloudfront"
