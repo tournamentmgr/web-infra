@@ -1,8 +1,7 @@
-'use strict';
-exports.handler = (event, context, callback) => {
+function handler(event) {
 
     //Get contents of response
-    const response = event.Records[0].cf.response;
+    const response = event.request;
     const headers = response.headers;
 
     //Set new headers 
@@ -34,5 +33,5 @@ exports.handler = (event, context, callback) => {
             value: 'gzip'
         }];
     }
-    callback(null, response);
+    return response;
 };

@@ -1,14 +1,11 @@
-exports.handler = (event, context, callback) => {
-    const request = event.Records[0].cf.request;
+function handler(event) {
+    const request = event.request;
     const headers = request.headers;
-    console.log("Headers", headers);
     const user_agent = headers['user-agent'];
 
     let uriAddition = '';
-    // Allow for compression, ignore if 
     try {
       if (headers['accept-encoding'] && headers['accept-encoding'][0].value === "gzip") {
-        console.log("Using compression")
         uriAddition = ".gz"
       }
     } catch(e) {
@@ -53,11 +50,9 @@ exports.handler = (event, context, callback) => {
         key: 'host',
         value: s3DomainName
       }];
-
-      console.log(user_agent[0].value, "requesting", request.uri);
     }
   }
 
   request.uri += uriAddition;
-  callback(null, request);
+  return request;
 };

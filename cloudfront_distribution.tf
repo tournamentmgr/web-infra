@@ -27,22 +27,29 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
       headers = ["Origin", "Access-Control-Request-Headers", "Accept-Encoding", "Access-Control-Request-Method", "user-agent"]
     }
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = "${aws_lambda_function.hsts_protection.arn}:${aws_lambda_function.hsts_protection.version}"
+    function_association {
+      event_type   = "origin-response"
+      function_arn = aws_cloudfront_function.hsts_protection.arn
     }
-    dynamic "lambda_function_association" {
+    dynamic "function_association" {
       for_each = var.basic_auth ? [1] : []
       content {
-        event_type = "viewer-request"
-        lambda_arn = "${aws_lambda_function.auth.0.arn}:${aws_lambda_function.auth.0.version}"
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.auth.0.arn
       }
     }
-    dynamic "lambda_function_association" {
+    dynamic "function_association" {
+      for_each = var.index_redirect ? [1] : []
+      content {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.index_redirect.0.arn
+      }
+    }
+    dynamic "function_association" {
       for_each = var.enable_prerender ? [1] : []
       content {
-        event_type = "origin-request"
-        lambda_arn = "${aws_lambda_function.prerender.0.arn}:${aws_lambda_function.prerender.0.version}"
+        event_type   = "origin-request"
+        function_arn = aws_cloudfront_function.prerender.0.arn
       }
     }
 
