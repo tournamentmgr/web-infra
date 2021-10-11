@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
     dynamic "function_association" {
-      for_each = var.index_redirect ? [1] : []
+      for_each = var.basic_auth ? [] : var.index_redirect ? [1] : []
       content {
         event_type   = "viewer-request"
         function_arn = aws_cloudfront_function.index_redirect.0.arn
