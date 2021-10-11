@@ -1,23 +1,20 @@
+data "aws_iam_policy_document" "edge" {
+  statement {
+    principals {
+      type = "Service"
+      identifiers = [
+        "lambda.amazonaws.com",
+        "edgelambda.amazonaws.com"
+      ]
+    }
+    actions = [
+      "sts:AssumeRole"
+    ]
+  }
+}
 resource "aws_iam_role" "lambda_at_edge_role" {
   name               = var.environment == "" ? "lambdaEdgeRole" : "lambdaEdgeRole_${var.environment}"
-  assume_role_policy = <<EOF
- {
-   "Version": "2012-10-17",
-   "Statement": [
-     {
-       "Sid": "",
-       "Effect": "Allow",
-       "Principal": {
-         "Service": [
-           "lambda.amazonaws.com",
-           "edgelambda.amazonaws.com"
-         ]
-       },
-       "Action": "sts:AssumeRole"
-     }
-   ]
- }
- EOF
+  assume_role_policy = data.aws_iam_policy_document.edge.json
 }
 data "template_file" "prerender" {
   template = file("${path.module}/templates/prerender.tmpl")

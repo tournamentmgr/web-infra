@@ -1,7 +1,7 @@
 function handler(event) {
-    const request = event.request;
-    const headers = request.headers;
-    const user_agent = headers['user-agent'];
+    var request = event.Records[0].cf.request;
+    var headers = request.headers;
+    var user_agent = headers['user-agent'];
 
     let uriAddition = '';
     try {
@@ -36,7 +36,7 @@ function handler(event) {
       }
 
       // Switch the prerendering bucket to S3
-      const s3DomainName = "${prerenderBucket}.s3.amazonaws.com";
+      var s3DomainName = "${prerenderBucket}.s3.amazonaws.com";
       request.origin = {
         s3: {
           domainName: s3DomainName,

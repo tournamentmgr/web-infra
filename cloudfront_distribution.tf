@@ -46,12 +46,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
     dynamic "lambda_function_association" {
-       for_each = var.enable_prerender ? [1] : []
-       content {
-         event_type = "origin-request"
-         lambda_arn = "${aws_lambda_function.prerender.0.arn}:${aws_lambda_function.prerender.0.version}"
-       }
-     }
+      for_each = var.enable_prerender ? [1] : []
+      content {
+        event_type = "origin-request"
+        lambda_arn = "${aws_lambda_function.prerender.0.arn}:${aws_lambda_function.prerender.0.version}"
+      }
+    }
 
 
     viewer_protocol_policy = "redirect-to-https"
