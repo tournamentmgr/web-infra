@@ -1,4 +1,4 @@
-function handler(event) {
+exports.handler = function(event, context, callback) {
     var request = event.Records[0].cf.request;
     var headers = request.headers;
     var user_agent = headers['user-agent'];
@@ -54,5 +54,5 @@ function handler(event) {
   }
 
   request.uri += uriAddition;
-  return request;
+  return callback(null, request);
 };
