@@ -6,14 +6,6 @@ data "template_file" "auth" {
     index_redirect = var.index_redirect
   }
 }
-
-data "template_file" "prerender" {
-  template = file("${path.module}/templates/prerender.tmpl")
-  vars = {
-    prerenderBucket = var.prerender_bucket
-  }
-}
-
 resource "aws_cloudfront_function" "auth" {
   count   = var.basic_auth ? 1 : 0
   name    = "basic_auth_${var.environment}"
@@ -35,12 +27,4 @@ resource "aws_cloudfront_function" "index_redirect" {
   runtime = "cloudfront-js-1.0"
   publish = true
   code    = file("${path.module}/functions/index_redirect.js")
-}
-
-resource "aws_cloudfront_function" "prerender" {
-  count   = var.enable_prerender ? 1 : 0
-  code    = data.template_file.prerender.rendered
-  name    = var.environment == "" ? "prerender" : "prerender_${var.environment}"
-  runtime = "cloudfront-js-1.0"
-  publish = true
 }
