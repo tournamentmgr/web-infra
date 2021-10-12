@@ -1,4 +1,4 @@
-name: Generate terraform docs
+name: Check docs generated
 on:
   - pull_request
 
@@ -9,11 +9,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.event.pull_request.head.ref }}
-
-    - name: Render terraform docs and push changes back to PR
-      uses: terraform-docs/gh-actions@main
-      with:
-        working-dir: .
-        output-file: README.md
-        output-method: inject
-        git-push: "true"
+    - name: Run terraform docs
+      run: docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown /terraform-docs > README.new
+    - name: Check if different
+      run: diff README.new README.md
