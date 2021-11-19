@@ -4,14 +4,6 @@ exports.handler = function(event, context, callback) {
     var user_agent = headers['user-agent'];
 
     let uriAddition = '';
-    try {
-      if (headers['accept-encoding'] && headers['accept-encoding'][0].value === "gzip") {
-        uriAddition = ".gz"
-      }
-    } catch(e) {
-      console.error("Error", e)
-    }
-    
     if (user_agent) {
       var prerender = /googlebot|apis-google|bingbot|yandex|baiduspider|Facebot|facebookexternalhit|twitterbot|discordbot|rogerbot|msnbot|linkedinbot|embedly|quora link preview|Slack-ImgProxy|showyoubot|outbrain|pinterest|slackbot|vkShare|curl|W3C_Validator/i.test(user_agent[0].value);
       prerender = prerender || /_escaped_fragment_/.test(request.querystring);
@@ -19,7 +11,6 @@ exports.handler = function(event, context, callback) {
       prerender = prerender && ! /apple-app-site-association|ads.txt|app-ads.txt/i.test(request.uri);
       if (prerender) {
         let path = request.uri;
-        uriAddition = '';
         
         // if a query string provided remove the query string and replace the ? with a + (translated to space with S3)
         if (request.querystring) {
