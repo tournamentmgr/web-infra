@@ -8,6 +8,7 @@ variable "domain" {
 
 variable "zoneid" {
   description = "route53 zone id"
+  default     = ""
 }
 variable "certificate_id" {
   description = "Certificate ID"

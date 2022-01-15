@@ -61,7 +61,7 @@ No modules.
 | <a name="input_password"></a> [password](#input\_password) | the password to utilize for the domain | `string` | `""` | no |
 | <a name="input_prerender_bucket"></a> [prerender\_bucket](#input\_prerender\_bucket) | Prerender Bucket name | `string` | `""` | no |
 | <a name="input_username"></a> [username](#input\_username) | the username to utilize for the domain | `string` | `""` | no |
-| <a name="input_zoneid"></a> [zoneid](#input\_zoneid) | route53 zone id | `any` | n/a | yes |
+| <a name="input_zoneid"></a> [zoneid](#input\_zoneid) | route53 zone id | `string` | `""` | no |
 
 ## Outputs
 
