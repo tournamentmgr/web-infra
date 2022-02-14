@@ -10,6 +10,6 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
     - name: Run terraform docs
-      run: docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown /terraform-docs > README.new
+      run: docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:latest markdown /terraform-docs > README.new
     - name: Check if different
       run: diff README.new README.md
