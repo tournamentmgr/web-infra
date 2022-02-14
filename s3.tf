@@ -37,17 +37,22 @@ data "aws_iam_policy_document" "s3_get_policy" {
 
 }
 
-resource "aws_s3_bucket" "bucket" {
+resource "aws_s3_bucket" "this" {
   bucket        = local.bucket
   policy        = data.aws_iam_policy_document.s3_get_policy.json
-  force_destroy = "true"
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+  force_destroy = "false"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.this.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
+}
+resource "aws_s3_bucket_cors_rule" "this" {
+  bucket = aws_s3_bucket.this.id
   cors_rule {
     allowed_headers = var.allowed_headers
     allowed_methods = var.allowed_methods
@@ -56,8 +61,8 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "bucket" {
-  bucket = aws_s3_bucket.bucket.id
+resource "aws_s3_bucket_public_access_block" "this" {
+  bucket = aws_s3_bucket.this.id
 
   block_public_acls   = true
   block_public_policy = true

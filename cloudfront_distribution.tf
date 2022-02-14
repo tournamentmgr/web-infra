@@ -1,7 +1,7 @@
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = aws_s3_bucket.bucket.bucket_regional_domain_name
-    origin_id   = aws_s3_bucket.bucket.id
+    domain_name = aws_s3_bucket.this.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.this.id
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
@@ -17,7 +17,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = var.allowed_methods
     cached_methods   = var.allowed_methods
-    target_origin_id = aws_s3_bucket.bucket.id
+    target_origin_id = aws_s3_bucket.this.id
     compress         = true
 
     forwarded_values {
@@ -61,7 +61,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   tags = {
-    Environment = "${var.environment}"
+    Environment = var.environment
   }
 
   restrictions {
