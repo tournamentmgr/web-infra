@@ -34,15 +34,17 @@ data "aws_iam_policy_document" "s3_get_policy" {
       identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
     }
   }
-
 }
 
 resource "aws_s3_bucket" "this" {
   bucket        = local.bucket
-  policy        = data.aws_iam_policy_document.s3_get_policy.json
   force_destroy = "false"
 }
 
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.this.id
+  policy =  data.aws_iam_policy_document.s3_get_policy.json
+}
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.id
   rule {
@@ -51,7 +53,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     }
   }
 }
-resource "aws_s3_bucket_cors_rule" "this" {
+resource "aws_s3_bucket_cors_configuration" "this" {
   bucket = aws_s3_bucket.this.id
   cors_rule {
     allowed_headers = var.allowed_headers
