@@ -14,13 +14,6 @@ resource "aws_cloudfront_function" "auth" {
   code    = data.template_file.auth.rendered
 }
 
-resource "aws_cloudfront_function" "hsts_protection" {
-  name    = var.environment == "" ? "hsts_protection" : "hsts_protection_${var.environment}"
-  runtime = "cloudfront-js-1.0"
-  publish = true
-  code    = file("${path.module}/functions/hsts.js")
-}
-
 resource "aws_cloudfront_function" "index_redirect" {
   count   = var.index_redirect ? 1 : 0
   name    = var.environment == "" ? "index_redirect" : "index_redirect_${var.environment}"
