@@ -8,10 +8,6 @@ data "aws_cloudfront_cache_policy" "cache_optimized" {
 resource "aws_cloudfront_response_headers_policy" "this" {
   name = var.environment == "" ? var.domain : var.environment
   security_headers_config {
-    content_security_policy {
-      content_security_policy = "default-src https:;"
-      override                = true
-    }
     content_type_options {
       override = true
     }
