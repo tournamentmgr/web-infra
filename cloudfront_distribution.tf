@@ -1,3 +1,38 @@
+data "aws_cloudfront_origin_request_policy" "personalized_manifest" {
+  name = "Managed-Elemental-MediaTailor-PersonalizedManifests"
+}
+data "aws_cloudfront_cache_policy" "cache_optimized" {
+  name = "Managed-CachingOptimized"
+}
+
+resource "aws_cloudfront_response_headers_policy" "this" {
+  name = var.environment == "" ? var.domain : var.environment
+  security_headers_config {
+    content_type_options {
+      override = true
+    }
+    frame_options {
+      frame_option = "DENY"
+      override     = true
+    }
+    referrer_policy {
+      referrer_policy = "same-origin"
+      override        = true
+    }
+    strict_transport_security {
+      access_control_max_age_sec = 63072000
+      include_subdomains         = true
+      preload                    = true
+      override                   = true
+    }
+    xss_protection {
+      protection = true
+      mode_block = true
+      override   = true
+    }
+  }
+
+}
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.this.bucket_regional_domain_name
@@ -14,23 +49,16 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   aliases = var.environment == "" ? [var.domain] : ["${var.environment}.${var.domain}"]
 
-  default_cache_behavior {
-    allowed_methods  = var.allowed_methods
-    cached_methods   = var.allowed_methods
-    target_origin_id = aws_s3_bucket.this.id
-    compress         = true
 
-    forwarded_values {
-      query_string = true
-      cookies {
-        forward = "none"
-      }
-      headers = ["Origin", "Access-Control-Request-Headers", "Accept-Encoding", "Access-Control-Request-Method", "user-agent"]
-    }
-    function_association {
-      event_type   = "viewer-response"
-      function_arn = aws_cloudfront_function.hsts_protection.arn
-    }
+  default_cache_behavior {
+    allowed_methods            = var.allowed_methods
+    cached_methods             = var.allowed_methods
+    target_origin_id           = aws_s3_bucket.this.id
+    compress                   = true
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.personalized_manifest.id
+    cache_policy_id            = data.aws_cloudfront_cache_policy.cache_optimized.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+
     dynamic "function_association" {
       for_each = var.basic_auth ? [1] : []
       content {
