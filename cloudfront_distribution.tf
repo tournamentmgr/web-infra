@@ -6,7 +6,7 @@ data "aws_cloudfront_cache_policy" "cache_optimized" {
 }
 
 resource "aws_cloudfront_response_headers_policy" "this" {
-  name = var.environment == "" ? var.domain : var.environment
+  name = var.environment == "" ? replace(var.domain, ".", "_") : var.environment
   security_headers_config {
     content_type_options {
       override = true
