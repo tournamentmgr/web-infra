@@ -67,3 +67,8 @@ variable "custom_error_responses" {
     response_page_path = "/index.html"
   }]
 }
+
+variable "region_denylist" {
+  description = "region location denylist"
+  default     = []
+}
