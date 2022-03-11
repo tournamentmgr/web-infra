@@ -93,8 +93,18 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   restrictions {
-    geo_restriction {
-      restriction_type = "none"
+    dynamic "geo_restriction" {
+      for_each = length(var.region_denylist) > 0 ? [1] : []
+      content {
+        restriction_type = "blacklist"
+        locations        = var.region_denylist
+      }
+    }
+    dynamic "geo_restriction" {
+      for_each = length(var.region_denylist) > 0 ? [] : [1]
+      content {
+        restriction_type = "none"
+      }
     }
   }
   viewer_certificate {
