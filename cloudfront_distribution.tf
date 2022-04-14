@@ -1,8 +1,8 @@
 data "aws_cloudfront_origin_request_policy" "personalized_manifest" {
   name = "Managed-Elemental-MediaTailor-PersonalizedManifests"
 }
-data "aws_cloudfront_cache_policy" "cache_optimized" {
-  name = "Managed-CachingOptimized"
+data "aws_cloudfront_cache_policy" "cache_disabled" {
+  name = "Managed-CachingDisabled"
 }
 
 resource "aws_cloudfront_response_headers_policy" "this" {
@@ -56,7 +56,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     target_origin_id           = aws_s3_bucket.this.id
     compress                   = true
     origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.personalized_manifest.id
-    cache_policy_id            = data.aws_cloudfront_cache_policy.cache_optimized.id
+    cache_policy_id            = data.aws_cloudfront_cache_policy.cache_disabled.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
 
     dynamic "function_association" {
