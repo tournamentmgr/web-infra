@@ -72,6 +72,7 @@ No modules.
 | <a name="input_index_redirect"></a> [index\_redirect](#input\_index\_redirect) | Enable index redirect https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-index.html | `bool` | `false` | no |
 | <a name="input_password"></a> [password](#input\_password) | the password to utilize for the domain | `string` | `""` | no |
 | <a name="input_prerender_bucket"></a> [prerender\_bucket](#input\_prerender\_bucket) | Prerender Bucket name | `string` | `""` | no |
+| <a name="input_price_class"></a> [price\_class](#input\_price\_class) | AWS CloudFront Price Class. See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class-1 | `string` | `"PriceClass_All"` | no |
 | <a name="input_region_denylist"></a> [region\_denylist](#input\_region\_denylist) | region location denylist | `list` | `[]` | no |
 | <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | S3 Bucket name | `string` | `null` | no |
 | <a name="input_username"></a> [username](#input\_username) | the username to utilize for the domain | `string` | `""` | no |

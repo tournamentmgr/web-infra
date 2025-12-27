@@ -79,3 +79,13 @@ variable "region_denylist" {
   description = "region location denylist"
   default     = []
 }
+
+variable "price_class" {
+  description = "AWS CloudFront Price Class. See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class-1"
+  default     = "PriceClass_All"
+  type        = string
+  validation {
+    condition     = contains(["PriceClass_All", "PriceClass_200", "PriceClass_100"], var.price_class)
+    error_message = "Price Class must be one of: PriceClass_All, PriceClass_200, PriceClass_100. See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class-1n"
+  }
+}
