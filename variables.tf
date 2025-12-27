@@ -14,6 +14,13 @@ variable "certificate_id" {
   description = "Certificate ID"
 }
 
+variable "s3_bucket_name" {
+  description = "S3 Bucket name"
+  default     = null
+  type        = string
+  nullable    = true
+}
+
 variable "basic_auth" {
   description = "Enable basic auth"
   default     = false

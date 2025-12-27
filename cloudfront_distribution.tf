@@ -6,7 +6,7 @@ data "aws_cloudfront_cache_policy" "cache_disabled" {
 }
 
 resource "aws_cloudfront_response_headers_policy" "this" {
-  name = var.environment == "" ? replace(var.domain, ".", "_") : var.environment
+  name = (var.environment == "") ? replace(var.domain, ".", "_") : var.environment
   security_headers_config {
     content_type_options {
       override = true
@@ -47,7 +47,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   is_ipv6_enabled     = true
   default_root_object = "index.html"
 
-  aliases = var.environment == "" ? [var.domain] : ["${var.environment}.${var.domain}"]
+  aliases = (var.environment == "") ? [var.domain] : ["${var.environment}.${var.domain}"]
 
 
   default_cache_behavior {
@@ -67,7 +67,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
     dynamic "function_association" {
-      for_each = var.basic_auth ? [] : var.index_redirect ? [1] : []
+      for_each = var.basic_auth ? [] : (var.index_redirect ? [1] : [])
       content {
         event_type   = "viewer-request"
         function_arn = aws_cloudfront_function.index_redirect.0.arn
