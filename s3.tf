@@ -1,5 +1,5 @@
 locals {
-  bucket = var.environment != "" ? "${local.root_domain}-${var.environment}" : local.root_domain
+  bucket = var.s3_bucket_name != null ? var.s3_bucket_name : var.environment != "" ? "${local.root_domain}-${var.environment}" : local.root_domain
 }
 data "aws_iam_policy_document" "s3_get_policy" {
   statement {
