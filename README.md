@@ -21,9 +21,9 @@ The following modules allow for simple to provision single page application envi
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
-| <a name="provider_template"></a> [template](#provider\_template) | n/a |
+| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.7.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.27.0 |
+| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
 
@@ -48,7 +48,7 @@ No modules.
 | [aws_s3_bucket_server_side_encryption_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [archive_file.prerender_zip](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_cloudfront_cache_policy.cache_optimized](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
+| [aws_cloudfront_cache_policy.cache_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_cloudfront_origin_request_policy.personalized_manifest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_origin_request_policy) | data source |
 | [aws_iam_policy_document.edge](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_get_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -60,18 +60,21 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_headers"></a> [allowed\_headers](#input\_allowed\_headers) | Allowed Methods | `list` | <pre>[<br>  "*"<br>]</pre> | no |
-| <a name="input_allowed_methods"></a> [allowed\_methods](#input\_allowed\_methods) | Allowed Methods | `list` | <pre>[<br>  "GET",<br>  "HEAD"<br>]</pre> | no |
-| <a name="input_allowed_origins"></a> [allowed\_origins](#input\_allowed\_origins) | Allowed Headers | `list` | <pre>[<br>  "*"<br>]</pre> | no |
+| <a name="input_allowed_headers"></a> [allowed\_headers](#input\_allowed\_headers) | Allowed Methods | `list` | <pre>[<br/>  "*"<br/>]</pre> | no |
+| <a name="input_allowed_methods"></a> [allowed\_methods](#input\_allowed\_methods) | Allowed Methods | `list` | <pre>[<br/>  "GET",<br/>  "HEAD"<br/>]</pre> | no |
+| <a name="input_allowed_origins"></a> [allowed\_origins](#input\_allowed\_origins) | Allowed Headers | `list` | <pre>[<br/>  "*"<br/>]</pre> | no |
 | <a name="input_basic_auth"></a> [basic\_auth](#input\_basic\_auth) | Enable basic auth | `bool` | `false` | no |
 | <a name="input_certificate_id"></a> [certificate\_id](#input\_certificate\_id) | Certificate ID | `any` | n/a | yes |
-| <a name="input_custom_error_responses"></a> [custom\_error\_responses](#input\_custom\_error\_responses) | Error Responses within cloudfront | <pre>list(object({<br>    error_code         = number,<br>    response_code      = number,<br>    response_page_path = string<br>  }))</pre> | <pre>[<br>  {<br>    "error_code": 404,<br>    "response_code": 200,<br>    "response_page_path": "/index.html"<br>  },<br>  {<br>    "error_code": 403,<br>    "response_code": 200,<br>    "response_page_path": "/index.html"<br>  }<br>]</pre> | no |
+| <a name="input_custom_error_responses"></a> [custom\_error\_responses](#input\_custom\_error\_responses) | Error Responses within cloudfront | <pre>list(object({<br/>    error_code         = number,<br/>    response_code      = number,<br/>    response_page_path = string<br/>  }))</pre> | <pre>[<br/>  {<br/>    "error_code": 404,<br/>    "response_code": 200,<br/>    "response_page_path": "/index.html"<br/>  },<br/>  {<br/>    "error_code": 403,<br/>    "response_code": 200,<br/>    "response_page_path": "/index.html"<br/>  }<br/>]</pre> | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | the domain you want to deploy to | `any` | n/a | yes |
 | <a name="input_enable_prerender"></a> [enable\_prerender](#input\_enable\_prerender) | Enable SEO Prerender bucket routing | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | the subdomain environment you want to deploy to. If domain is naked, do not specify | `string` | `""` | no |
 | <a name="input_index_redirect"></a> [index\_redirect](#input\_index\_redirect) | Enable index redirect https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-index.html | `bool` | `false` | no |
 | <a name="input_password"></a> [password](#input\_password) | the password to utilize for the domain | `string` | `""` | no |
 | <a name="input_prerender_bucket"></a> [prerender\_bucket](#input\_prerender\_bucket) | Prerender Bucket name | `string` | `""` | no |
+| <a name="input_price_class"></a> [price\_class](#input\_price\_class) | AWS CloudFront Price Class. See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class-1 | `string` | `"PriceClass_All"` | no |
+| <a name="input_region_denylist"></a> [region\_denylist](#input\_region\_denylist) | region location denylist | `list` | `[]` | no |
+| <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | S3 Bucket name | `string` | `null` | no |
 | <a name="input_username"></a> [username](#input\_username) | the username to utilize for the domain | `string` | `""` | no |
 | <a name="input_zoneid"></a> [zoneid](#input\_zoneid) | route53 zone id | `string` | `""` | no |
 

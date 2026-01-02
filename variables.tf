@@ -14,6 +14,12 @@ variable "certificate_id" {
   description = "Certificate ID"
 }
 
+variable "s3_bucket_name" {
+  description = "S3 Bucket name"
+  default     = null
+  type        = string
+}
+
 variable "basic_auth" {
   description = "Enable basic auth"
   default     = false
@@ -71,4 +77,14 @@ variable "custom_error_responses" {
 variable "region_denylist" {
   description = "region location denylist"
   default     = []
+}
+
+variable "price_class" {
+  description = "AWS CloudFront Price Class. See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class-1"
+  default     = "PriceClass_All"
+  type        = string
+  validation {
+    condition     = contains(["PriceClass_All", "PriceClass_200", "PriceClass_100"], var.price_class)
+    error_message = "Price Class must be one of: PriceClass_All, PriceClass_200, PriceClass_100. See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#price_class-1."
+  }
 }
