@@ -16,18 +16,14 @@ resource "aws_iam_role" "lambda_at_edge_role" {
   name               = var.environment == "" ? "lambdaEdgeRole" : "lambdaEdgeRole_${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.edge.json
 }
-data "template_file" "prerender" {
-  template = file("${path.module}/templates/prerender.tmpl")
-  vars = {
-    prerenderBucket = var.prerender_bucket
-  }
-}
 data "archive_file" "prerender_zip" {
   type        = "zip"
   output_path = "${path.module}/prerender.zip"
 
   source {
-    content  = data.template_file.prerender.rendered
+    content = templatefile("${path.module}/templates/prerender.tmpl", {
+      prerenderBucket = var.prerender_bucket
+    })
     filename = "lambda.js"
   }
 }

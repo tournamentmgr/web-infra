@@ -43,7 +43,7 @@ resource "aws_s3_bucket" "this" {
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.this.id
-  policy =  data.aws_iam_policy_document.s3_get_policy.json
+  policy = data.aws_iam_policy_document.s3_get_policy.json
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.id
