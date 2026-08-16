@@ -23,7 +23,6 @@ The following modules allow for simple to provision single page application envi
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | 2.7.1 |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 6.27.0 |
-| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
 
