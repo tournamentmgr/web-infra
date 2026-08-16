@@ -1,17 +1,13 @@
-data "template_file" "auth" {
-  template = file("${path.module}/templates/password.tmpl")
-  vars = {
-    username       = var.username
-    password       = var.password
-    index_redirect = var.index_redirect
-  }
-}
 resource "aws_cloudfront_function" "auth" {
   count   = var.basic_auth ? 1 : 0
   name    = "basic_auth_${var.environment}"
   runtime = "cloudfront-js-1.0"
   publish = true
-  code    = data.template_file.auth.rendered
+  code = templatefile("${path.module}/templates/password.tmpl", {
+    username       = var.username
+    password       = var.password
+    index_redirect = var.index_redirect
+  })
 }
 
 resource "aws_cloudfront_function" "index_redirect" {
